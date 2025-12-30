@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const SALARY_DAY = 12;
+    const loader = document.getElementById('loader');
+    const container = document.querySelector('.container');
+
     const formatMoney = (num) => new Intl.NumberFormat('uz-UZ').format(num);
 
     const getLocalDate = (d) => {
@@ -7,10 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Date(d.getTime() - offset).toISOString().slice(0, 10);
     };
 
-    async function loadAllData() {
-        const tableBody = document.getElementById('tableBody');
-        tableBody.innerHTML = '<tr><td colspan="3">Yuklanmoqda...</td></tr>';
-        
+    const showLoader = () => {
+        loader.classList.remove('hidden');
+        container.classList.add('loading-blur');
+    };
+    const hideLoader = () => {
+        loader.classList.add('hidden');
+        container.classList.remove('loading-blur');
+    };
+
+    async function loadAllData(silent = false) {
+        if (!silent) showLoader();
         try {
             const res = await fetch('/api/loadData');
             const { base, payments } = await res.json();
@@ -22,13 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderHistoryTable(base, payments);
             }
         } catch (err) {
-            tableBody.innerHTML = '<tr><td colspan="3" style="color:red">Xato yuz berdi!</td></tr>';
+            console.error(err);
+        } finally {
+            hideLoader();
         }
     }
 
     function renderMainTable(base, payments) {
         const tableBody = document.getElementById('tableBody');
-        tableBody.innerHTML = '';
+        let rowsHTML = '';
         let balance = base;
         const todayStr = getLocalDate(new Date());
         const start = new Date();
@@ -44,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             balance -= taken;
 
             const isToday = (date === todayStr);
-            tableBody.insertAdjacentHTML('beforeend', `
+            rowsHTML += `
                 <tr class="${isToday ? 'today-row' : ''}">
                     <td class="readonly">${isToday ? `<b>${date}</b>` : date}</td>
                     <td>
@@ -52,14 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                onchange="updatePayment('${date}', this.value)">
                     </td>
                     <td class="readonly money-cell">${formatMoney(balance)}</td>
-                </tr>
-            `);
+                </tr>`;
         }
+        tableBody.innerHTML = rowsHTML;
     }
 
     function renderHistoryTable(base, payments) {
         const historyTable = document.getElementById('historyTable');
-        historyTable.innerHTML = '';
+        let rowsHTML = '';
         const start = new Date();
         start.setFullYear(start.getFullYear() - 1);
 
@@ -81,32 +93,34 @@ document.addEventListener('DOMContentLoaded', () => {
             balance -= taken;
 
             if (taken > 0 || d.getDate() === SALARY_DAY) {
-                historyTable.insertAdjacentHTML('beforeend', `
+                rowsHTML += `
                     <tr>
                         <td>${date}</td>
                         <td class="money-cell">${formatMoney(taken)}</td>
                         <td class="money-cell">${formatMoney(balance)}</td>
-                    </tr>
-                `);
+                    </tr>`;
             }
         }
+        historyTable.innerHTML = rowsHTML;
     }
 
     document.getElementById('saveSalary').onclick = async () => {
+        showLoader();
         const value = +document.getElementById('baseSalary').value;
         await fetch('/api/saveSalary', {
             method: 'POST',
             body: JSON.stringify({ value })
         });
-        loadAllData();
+        await loadAllData(true);
     };
 
     window.updatePayment = async (date, amount) => {
+        showLoader();
         await fetch('/api/savePayment', {
             method: 'POST',
             body: JSON.stringify({ date, amount: +amount })
         });
-        loadAllData();
+        await loadAllData(true);
     };
 
     document.getElementById('toggleHistory').onclick = () => {
@@ -116,15 +130,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.getElementById('clearAllData').onclick = async () => {
-        const pwd = prompt("Xavfsizlik paroli:");
+        const pwd = prompt("Parol:");
         if (pwd === "Gamma#2025gamma") {
-            if (confirm("Barcha ma'lumotlarni o'chirishga ishonchingiz komilmi?")) {
-                const res = await fetch('/api/clearData', { method: 'POST' });
-                if (res.ok) location.reload();
+            if (confirm("Hamma ma'lumotni o'chirishni tasdiqlaysizmi?")) {
+                showLoader();
+                await fetch('/api/clearData', { method: 'POST' });
+                location.reload();
             }
-        } else {
-            alert("Parol noto'g'ri!");
-        }
+        } else { alert("Xato!"); }
     };
 
     loadAllData();

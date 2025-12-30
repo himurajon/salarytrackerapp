@@ -1,4 +1,3 @@
-/* Asosiy sozlamalar */
 :root {
   --primary-color: #3498db;
   --secondary-color: #2ecc71;
@@ -10,9 +9,8 @@
 }
 
 body {
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   background-color: var(--bg-color);
-  color: var(--text-color);
   margin: 0;
   padding: 20px;
   display: flex;
@@ -26,16 +24,42 @@ body {
   padding: 30px;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transition: filter 0.3s ease;
 }
 
-h2, h3 {
-  text-align: center;
-  margin-top: 0;
-  color: var(--text-color);
-  font-weight: 600;
+/* Loader Stili */
+.loader-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
 }
 
-/* Maosh kiritish qismi */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-blur {
+    filter: blur(2px);
+    pointer-events: none;
+}
+
+h2, h3 { text-align: center; color: var(--text-color); }
+
 .salary-box {
   background: #f8fafc;
   padding: 20px;
@@ -48,118 +72,45 @@ h2, h3 {
   border: 1px solid var(--border-color);
 }
 
-.salary-box label {
-  font-weight: bold;
-  font-size: 0.95rem;
-}
-
 .salary-box input {
-  padding: 10px 15px;
+  padding: 10px;
   border: 2px solid var(--border-color);
   border-radius: 8px;
   width: 150px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
 }
 
-.salary-box input:focus {
-  border-color: var(--primary-color);
-  outline: none;
-}
-
-/* Jadvallar stili */
 table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin-top: 10px;
+  border-collapse: collapse;
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid var(--border-color);
 }
 
 th {
   background-color: var(--primary-color);
   color: var(--white);
-  font-weight: 500;
-  padding: 15px 10px;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
+  padding: 15px;
 }
 
 td {
-  padding: 12px 10px;
+  padding: 12px;
   border-bottom: 1px solid var(--border-color);
   text-align: center;
 }
 
-/* Jadval qatorlari animatsiyasi */
-tbody tr:nth-child(even) {
-  background-color: #fafbfc;
-}
-
-tbody tr:hover {
-  background-color: #f1f4f6;
-}
-
-/* Bugungi kunni belgilash */
-.today-row {
-  background-color: #eef2ff !important;
-  font-weight: bold;
-}
-
-.today-row td {
-  border-top: 2px solid var(--primary-color);
-  border-bottom: 2px solid var(--primary-color);
-  color: var(--primary-color);
-}
-
-/* Raqamlar uchun maxsus klass */
 .money-cell {
   text-align: right;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: monospace;
   font-weight: 600;
   color: #27ae60;
-  padding-right: 20px;
 }
 
-.readonly {
-  color: #7f8c8d;
-  font-size: 0.9rem;
+.today-row {
+  background-color: #eef2ff !important;
+  border-left: 4px solid var(--primary-color);
 }
 
-/* Jadval ichidagi inputlar */
-td input[type="number"] {
-  width: 90px;
-  padding: 6px;
-  border: 1px solid #dcdde1;
-  border-radius: 6px;
-  text-align: center;
-  background: transparent;
-}
-
-/* Tugmalar dizayni */
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-#saveSalary {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-#saveSalary:hover {
-  background-color: #2980b9;
-  transform: translateY(-1px);
-}
+.hidden { display: none; }
 
 .footer {
   margin-top: 30px;
@@ -168,51 +119,17 @@ button {
   justify-content: center;
 }
 
-#toggleHistory {
-  background-color: var(--secondary-color);
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: var(--primary-color);
   color: white;
+  transition: 0.3s;
 }
 
-#toggleHistory:hover {
-  background-color: #27ae60;
-}
+button.danger { background-color: var(--danger-color); }
 
-.danger {
-  background-color: var(--danger-color);
-  color: white;
-}
-
-.danger:hover {
-  background-color: #c0392b;
-}
-
-/* Tarix qismi */
-#historyBox {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 2px dashed var(--border-color);
-}
-
-.hidden {
-  display: none;
-}
-
-/* Mobil moslashuvchanlik (Responsive) */
-@media (max-width: 600px) {
-  .salary-box {
-    flex-direction: column;
-  }
-  
-  .container {
-    padding: 15px;
-  }
-  
-  th, td {
-    padding: 8px 5px;
-    font-size: 0.8rem;
-  }
-  
-  .money-cell {
-    padding-right: 5px;
-  }
-}
+#toggleHistory { background-color: var(--secondary-color); }
