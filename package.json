@@ -1,0 +1,19 @@
+{
+  "name": "salary-tracker-app",
+  "version": "1.0.0",
+  "description": "Supabase va Vercel orqali oylik maoshni kuzatish dasturi",
+  "main": "index.js",
+  "scripts": {
+    "start": "vercel dev",
+    "deploy": "vercel deploy --prod"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}

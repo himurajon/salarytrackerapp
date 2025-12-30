@@ -1,0 +1,65 @@
+body {
+     font-family: sans-serif;
+     background: #f0f2f5;
+     padding: 20px;
+}
+ .container {
+     max-width: 600px;
+     margin: auto;
+     background: white;
+     padding: 20px;
+     border-radius: 8px;
+     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+ h2 {
+     text-align: center;
+     color: #1a73e8;
+}
+ .salary-box {
+     margin-bottom: 20px;
+     display: flex;
+     gap: 10px;
+     justify-content: center;
+}
+ table {
+     width: 100%;
+     border-collapse: collapse;
+}
+ th, td {
+     border: 1px solid #ddd;
+     padding: 8px;
+     text-align: center;
+}
+ th {
+     background: #1a73e8;
+     color: white;
+}
+ .money-cell {
+     text-align: right;
+     font-weight: bold;
+}
+ input[type="number"] {
+     width: 80px;
+     padding: 4px;
+     border: 1px solid #ccc;
+}
+ .today-row {
+     background-color: #e8f0fe;
+     border: 2px solid #1a73e8;
+}
+ .hidden {
+     display: none;
+}
+ .footer {
+     margin-top: 20px;
+     display: flex;
+     gap: 10px;
+}
+ .danger {
+     background: #d93025;
+     color: white;
+     border: none;
+     padding: 8px;
+     border-radius: 4px;
+     cursor: pointer;
+}
