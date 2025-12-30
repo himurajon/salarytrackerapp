@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oylik Maosh Tracker v4.0</title>
+    <title>Oylik Maosh v4.1</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h2>Maosh Hisobi (Supabase Cloud)</h2>
-
+        <h2>Oylik Maosh Tracker</h2>
         <div class="salary-box">
             <label>Dastlabki maosh:</label>
             <input type="number" id="baseSalary">
             <button id="saveSalary">Saqlash</button>
         </div>
-
-        <table class="main-table">
+        <table>
             <thead>
                 <tr>
                     <th>Sana</th>
@@ -26,15 +24,13 @@
             </thead>
             <tbody id="tableBody"></tbody>
         </table>
-
         <div class="footer">
             <button id="toggleHistory">1 yillik tarix</button>
             <button id="clearAllData" class="danger">Tozalash</button>
         </div>
-
         <div id="historyBox" class="hidden">
-            <h3>Tarixiy ko'rinish</h3>
-            <table class="history-table">
+            <h3>Tarix</h3>
+            <table>
                 <thead>
                     <tr>
                         <th>Sana</th>

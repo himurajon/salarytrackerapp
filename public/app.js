@@ -7,17 +7,27 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Date(d.getTime() - offset).toISOString().slice(0, 10);
     };
 
-    // Ma'lumotlarni serverdan yuklash
     async function loadAllData() {
+        const tableBody = document.getElementById('tableBody');
         tableBody.innerHTML = '<tr><td colspan="3">Yuklanmoqda...</td></tr>';
-        const res = await fetch('/api/loadData');
-        const { base, payments } = await res.json();
+        
+        try {
+            const res = await fetch('/api/loadData');
+            const { base, payments } = await res.json();
 
-        baseSalary.value = base;
-        renderTables(base, payments);
+            document.getElementById('baseSalary').value = base;
+            renderMainTable(base, payments);
+            
+            if (!document.getElementById('historyBox').classList.contains('hidden')) {
+                renderHistoryTable(base, payments);
+            }
+        } catch (err) {
+            tableBody.innerHTML = '<tr><td colspan="3" style="color:red">Xato yuz berdi!</td></tr>';
+        }
     }
 
-    function renderTables(base, payments) {
+    function renderMainTable(base, payments) {
+        const tableBody = document.getElementById('tableBody');
         tableBody.innerHTML = '';
         let balance = base;
         const todayStr = getLocalDate(new Date());
@@ -47,9 +57,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Saqlash funksiyalari (API orqali)
-    saveSalary.onclick = async () => {
-        const value = +baseSalary.value;
+    function renderHistoryTable(base, payments) {
+        const historyTable = document.getElementById('historyTable');
+        historyTable.innerHTML = '';
+        const start = new Date();
+        start.setFullYear(start.getFullYear() - 1);
+
+        let balance = 0;
+        let currentPeriod = '';
+
+        for (let i = 0; i <= 365; i++) {
+            const d = new Date(start);
+            d.setDate(start.getDate() + i);
+            const date = getLocalDate(d);
+
+            if (d.getDate() === SALARY_DAY) {
+                balance = base;
+                currentPeriod = date;
+            }
+            if (!currentPeriod) continue;
+
+            const taken = payments[date] || 0;
+            balance -= taken;
+
+            if (taken > 0 || d.getDate() === SALARY_DAY) {
+                historyTable.insertAdjacentHTML('beforeend', `
+                    <tr>
+                        <td>${date}</td>
+                        <td class="money-cell">${formatMoney(taken)}</td>
+                        <td class="money-cell">${formatMoney(balance)}</td>
+                    </tr>
+                `);
+            }
+        }
+    }
+
+    document.getElementById('saveSalary').onclick = async () => {
+        const value = +document.getElementById('baseSalary').value;
         await fetch('/api/saveSalary', {
             method: 'POST',
             body: JSON.stringify({ value })
@@ -65,6 +109,23 @@ document.addEventListener('DOMContentLoaded', () => {
         loadAllData();
     };
 
-    // Boshlang'ich yuklash
+    document.getElementById('toggleHistory').onclick = () => {
+        const historyBox = document.getElementById('historyBox');
+        historyBox.classList.toggle('hidden');
+        loadAllData();
+    };
+
+    document.getElementById('clearAllData').onclick = async () => {
+        const pwd = prompt("Xavfsizlik paroli:");
+        if (pwd === "Gamma#2025gamma") {
+            if (confirm("Barcha ma'lumotlarni o'chirishga ishonchingiz komilmi?")) {
+                const res = await fetch('/api/clearData', { method: 'POST' });
+                if (res.ok) location.reload();
+            }
+        } else {
+            alert("Parol noto'g'ri!");
+        }
+    };
+
     loadAllData();
 });

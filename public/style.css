@@ -1,65 +1,218 @@
+/* Asosiy sozlamalar */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --text-color: #2c3e50;
+  --bg-color: #f4f7f6;
+  --white: #ffffff;
+  --border-color: #ecf0f1;
+}
+
 body {
-     font-family: sans-serif;
-     background: #f0f2f5;
-     padding: 20px;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
 }
- .container {
-     max-width: 600px;
-     margin: auto;
-     background: white;
-     padding: 20px;
-     border-radius: 8px;
-     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+.container {
+  width: 100%;
+  max-width: 750px;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
- h2 {
-     text-align: center;
-     color: #1a73e8;
+
+h2, h3 {
+  text-align: center;
+  margin-top: 0;
+  color: var(--text-color);
+  font-weight: 600;
 }
- .salary-box {
-     margin-bottom: 20px;
-     display: flex;
-     gap: 10px;
-     justify-content: center;
+
+/* Maosh kiritish qismi */
+.salary-box {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  border: 1px solid var(--border-color);
 }
- table {
-     width: 100%;
-     border-collapse: collapse;
+
+.salary-box label {
+  font-weight: bold;
+  font-size: 0.95rem;
 }
- th, td {
-     border: 1px solid #ddd;
-     padding: 8px;
-     text-align: center;
+
+.salary-box input {
+  padding: 10px 15px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  width: 150px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
 }
- th {
-     background: #1a73e8;
-     color: white;
+
+.salary-box input:focus {
+  border-color: var(--primary-color);
+  outline: none;
 }
- .money-cell {
-     text-align: right;
-     font-weight: bold;
+
+/* Jadvallar stili */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
 }
- input[type="number"] {
-     width: 80px;
-     padding: 4px;
-     border: 1px solid #ccc;
+
+th {
+  background-color: var(--primary-color);
+  color: var(--white);
+  font-weight: 500;
+  padding: 15px 10px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
 }
- .today-row {
-     background-color: #e8f0fe;
-     border: 2px solid #1a73e8;
+
+td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border-color);
+  text-align: center;
 }
- .hidden {
-     display: none;
+
+/* Jadval qatorlari animatsiyasi */
+tbody tr:nth-child(even) {
+  background-color: #fafbfc;
 }
- .footer {
-     margin-top: 20px;
-     display: flex;
-     gap: 10px;
+
+tbody tr:hover {
+  background-color: #f1f4f6;
 }
- .danger {
-     background: #d93025;
-     color: white;
-     border: none;
-     padding: 8px;
-     border-radius: 4px;
-     cursor: pointer;
+
+/* Bugungi kunni belgilash */
+.today-row {
+  background-color: #eef2ff !important;
+  font-weight: bold;
+}
+
+.today-row td {
+  border-top: 2px solid var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+/* Raqamlar uchun maxsus klass */
+.money-cell {
+  text-align: right;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 600;
+  color: #27ae60;
+  padding-right: 20px;
+}
+
+.readonly {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* Jadval ichidagi inputlar */
+td input[type="number"] {
+  width: 90px;
+  padding: 6px;
+  border: 1px solid #dcdde1;
+  border-radius: 6px;
+  text-align: center;
+  background: transparent;
+}
+
+/* Tugmalar dizayni */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#saveSalary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#saveSalary:hover {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+}
+
+.footer {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+#toggleHistory {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+#toggleHistory:hover {
+  background-color: #27ae60;
+}
+
+.danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.danger:hover {
+  background-color: #c0392b;
+}
+
+/* Tarix qismi */
+#historyBox {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px dashed var(--border-color);
+}
+
+.hidden {
+  display: none;
+}
+
+/* Mobil moslashuvchanlik (Responsive) */
+@media (max-width: 600px) {
+  .salary-box {
+    flex-direction: column;
+  }
+  
+  .container {
+    padding: 15px;
+  }
+  
+  th, td {
+    padding: 8px 5px;
+    font-size: 0.8rem;
+  }
+  
+  .money-cell {
+    padding-right: 5px;
+  }
 }
